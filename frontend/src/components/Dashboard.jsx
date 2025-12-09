@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import SearchBar from './SearchBar';
 import MovieCard from './MovieCard';
+import { API_BASE_URL } from '../config';  // adjust path if needed
 
 const Dashboard = ({ activeView }) => {
     const [movies, setMovies] = useState([]);
@@ -13,8 +14,9 @@ const Dashboard = ({ activeView }) => {
         setError(null);
         try {
             // Assuming backend is on localhost:5000
-            const res = await axios.get(`http://localhost:5000/api/search?query=${query}`);
-            setMovies(res.data.results || []);
+            const res = await axios.get(`${API_BASE_URL}/api/search`, {
+    params: { query },
+});setMovies(res.data.results || []);
         } catch (err) {
             console.error(err);
             setError('SYSTEM ERROR: UNABLE TO CONNECT TO MAINFRAME MODULE (API)');
