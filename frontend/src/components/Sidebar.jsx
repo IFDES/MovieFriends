@@ -18,7 +18,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
             gap: '20px'
         }}>
             <h1 className="glow-text" style={{ fontSize: '1.5rem', marginBottom: '30px' }}>
-                M.O.N.K.Y<br />
+                MovieFriends<br />
                 <span style={{ fontSize: '0.8rem', color: '#666' }}>OS VER 2.0</span>
             </h1>
 

@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import SearchBar from './SearchBar';
 import MovieCard from './MovieCard';
+import MovieDetails from './MovieDetails';
 
 const Dashboard = ({ activeView }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [selectedMovieId, setSelectedMovieId] = useState(null);
 
     const searchMovies = async (query) => {
         setLoading(true);
         setError(null);
+        setSelectedMovieId(null);
         try {
             // Assuming backend is on localhost:5000
             const res = await axios.get(`http://localhost:5000/api/search?query=${query}`);
@@ -21,6 +24,10 @@ const Dashboard = ({ activeView }) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleMovieClick = (id) => {
+        setSelectedMovieId(id);
     };
 
     const renderContent = () => {
@@ -49,6 +56,9 @@ const Dashboard = ({ activeView }) => {
                     </div>
                 );
             case 'search':
+                if (selectedMovieId) {
+                    return <MovieDetails movieId={selectedMovieId} onBack={() => setSelectedMovieId(null)} />;
+                }
                 return (
                     <div>
                         <h2 className="glow-text" style={{ marginBottom: '20px' }}>DATABASE SEARCH</h2>
@@ -59,7 +69,9 @@ const Dashboard = ({ activeView }) => {
 
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px' }}>
                             {movies.map(movie => (
-                                <MovieCard key={movie.id} movie={movie} />
+                                <div key={movie.id} onClick={() => handleMovieClick(movie.id)} style={{ cursor: 'pointer' }}>
+                                    <MovieCard movie={movie} />
+                                </div>
                             ))}
                         </div>
                     </div>
